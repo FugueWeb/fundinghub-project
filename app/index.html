@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Final Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href="./app.css" rel='stylesheet' type='text/css'>
+  <script src="./app.js"></script>
+</head>
+<body>
+  <div class="container-fluid">
+    <h1><img src="images/ethereum.png" alt="Ethereum">Final Project | FugueWeb</h1>
+    <table class="table table-fluid">
+      <tr>
+        <th></th>
+        <th>Address</th>
+        <th>Balance</th>
+      </tr>
+      <tr>
+        <th>FundingHub Contract</th>
+        <td><span class="black"><span id="f_address" class="f_address"></span></span></td>
+        <td><span class="black"><span id="f_balance"></span> ETH</span></td>
+      </tr>
+      <!--<tr>
+        <th>Project Contract</th>
+        <td><span class="black"><span id="p_address" class="p_address"></span></span></td>
+        <td><span class="black"><span id="p_balance"></span> ETH</span></td>
+      </tr>-->
+    </table>
+    <div class="col-lg-12" style="padding-top: 10px; text-align:right;">Coinbase Balance: <span id="cb_balance"></span></div>
+    <div class="col-lg-12" id="status"></div>
+
+    <div class="row">
+
+      <div class="col-lg-12">
+
+        <h3><img src="images/ethereum.png" alt="Ethereum">Browse Projects</h3>
+
+        <table class="table table-fluid" id="browse-projects-table">
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Address</th>
+            <th>Funding Goal</th>
+            <th>Deadline</th>
+          </tr>
+        </table>
+
+      <div class="row">
+          <div class="col-md-6">
+
+            <form class="form-horizontal">
+            <fieldset>
+
+            <!-- Form Name -->
+            <legend>Create Project</legend>
+
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="projectNameInput">Name of Project</label>
+              <div class="col-md-5">
+              <input id="projectNameInput" name="projectNameInput" type="text" placeholder="string" class="form-control input-md" required="">
+              <span class="help-block">What is your project called?</span>
+              </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="projectDescInput">Project description</label>
+              <div class="col-md-6">
+              <input id="projectDescInput" name="projectDescInput" type="text" placeholder="string" class="form-control input-md" required="">
+              <span class="help-block">Brief project description</span>
+              </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="projectAddrInput">User Address</label>
+              <div class="col-md-4">
+              <input id="projectAddrInput" name="projectAddrInput" type="text" placeholder="address" class="form-control input-md" required="">
+              <span class="help-block">Where do you want to receive funds if goal is reached?</span>
+              </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="projectAmountInput">Amount Needed</label>
+              <div class="col-md-4">
+              <input id="projectAmountInput" name="projectAmountInput" type="text" placeholder="uint (example, 400)" class="form-control input-md" required="">
+              <span class="help-block">Enter whole number for amount of ETH needed to fund your project</span>
+              </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="projectMinutesInput">Minutes until deadline</label>
+              <div class="col-md-4">
+              <input id="projectMinutesInput" name="projectMinutesInput" type="text" placeholder="uint (example, 1000)" class="form-control input-md" required="">
+              <span class="help-block">Enter whole number of minutes from now when funding period ends</span>
+              </div>
+            </div>
+
+            <!-- Button -->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="projectSubmitBtn"></label>
+              <div class="col-md-4">
+                <button id="projectSubmitBtn" type="button" onclick="createProject()" name="projectSubmitBtn" class="btn btn-primary">Create Project</button>
+              </div>
+            </div>
+
+            </fieldset>
+            </form>
+
+
+          </div>
+          <div class="col-md-6">
+
+            <form class="form-horizontal">
+            <fieldset>
+
+            <!-- Form Name -->
+            <legend>Contribute to a Project</legend>
+
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="contributeAddrInput">Project Address</label>
+              <div class="col-md-5">
+              <input id="contributeAddrInput" name="contributeAddrInput" type="text" placeholder="address" class="form-control input-md" required="">
+              <span class="help-block">Enter project address</span>
+              </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="contributeAmountInput">Amount</label>
+              <div class="col-md-4">
+              <input id="contributeAmountInput" name="contributeAmountInput" type="text" placeholder="uint (example, 400)" class="form-control input-md" required="">
+              <span class="help-block">How much ETH do you want to contribute?</span>
+              </div>
+            </div>
+
+            <!-- Button -->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="contributeBtn"></label>
+              <div class="col-md-4">
+                <button id="contributeBtn" type="button" onclick="contribute()" name="contributeBtn" class="btn btn-primary">Contribute</button>
+              </div>
+            </div>
+
+            </fieldset>
+            </form>
+          </div>
+      </div>
+
+
+    <table class="table table-fluid" id="transaction-table">
+      <tr>
+        <th>Transaction Info</th>
+      </tr>
+    </table>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <h2>Available address(es)</h2>
+        <select class="form-control" id="select-box">
+        </select>
+      </div>
+    </div>
+
+  </div>
+  <!-- Latest compiled and minified JavaScript -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> -->
+</body>
+</html>

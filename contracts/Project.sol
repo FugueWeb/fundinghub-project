@@ -3,7 +3,6 @@ contract Project {
     address public beneficiary;
     uint public fundingGoal; uint public amountRaised; uint public deadline; uint public price;
     string public pName; string public pDesc;
-    //token public tokenReward;
     mapping(address => uint256) public balanceOf;
     bool fundingGoalReached = false;
     event GoalReached(address beneficiary, uint amountRaised);
@@ -18,8 +17,6 @@ contract Project {
         address ifSuccessfulSendTo,
         uint fundingGoalInEthers,
         uint durationInMinutes
-        //uint etherCostOfEachToken,
-        //token addressOfTokenUsedAsReward
     ) {
         beneficiary = ifSuccessfulSendTo;
         fundingGoal = fundingGoalInEthers * 1 ether;
@@ -27,8 +24,6 @@ contract Project {
         pName = projectName;
         pDesc = projectDesc;
         ProjectCreated(this);
-        //price = etherCostOfEachToken * 1 ether;
-        //tokenReward = token(addressOfTokenUsedAsReward);
     }
 
 	function fund(uint amount) internal{

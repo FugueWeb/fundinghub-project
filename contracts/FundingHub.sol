@@ -2,12 +2,12 @@ import "./Project.sol";
 
 contract FundingHub {
 
-	string public hubName;
-	event ProjectCreated(string pName, string pDesc, address pAddr);
+	string public fundingHubName;
+	event ProjectCreated(string pName, string pDesc, address pAddr, uint pGoal, uint pDeadline);
 	event ProjectContributedTo(address pcAddr, uint pcAmount);
 
-	function FundingHub() {
-		hubName = "FugueWeb Funding Hub";
+	function FundingHub(string fhName) {
+		fundingHubName = fhName;
 	}
 
 	// array of ProjectInfo structs
@@ -21,16 +21,16 @@ contract FundingHub {
 	}
 
 	function createProject(string name, string desc, address successAddr, uint fundingGoal, uint durationMin) {
-		Project project = new Project(name, desc, successAddr, fundingGoal, durationMin);
+		address p = address(new Project(name, desc, successAddr, fundingGoal, durationMin));
 		uint theDeadline = now + durationMin * 1 minutes;
 
-		projects[project] = FHProjects({
+		projects[p] = FHProjects({
 			amountToBeRaised: fundingGoal,
 			deadline: theDeadline,
 			nameOfProject: name,
 			descOfProject: desc
 		});
-		ProjectCreated(name, desc, project);
+		ProjectCreated(name, desc, p, fundingGoal, theDeadline);
 	}
 
 	function contribute(address projectAddress, uint amountToContribute) {

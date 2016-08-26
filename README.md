@@ -15,7 +15,13 @@ Decentralized crowd funding dApp with front end. Two contracts deployed (`Fundin
 * `truffle serve`
 
 ## Interact with the dApp
+* Create a project by filling out the fields (name, description, owner address, funding goal, and deadline). Time (in minutes) is converted to human readable date. Funding goal is in Ether, not Wei. Once project is created, the tx is logged in the "Transaction Info" table and the project is added to the "Browse Projects" table. Add as many projects as you want and they'll be added to the list.
+* Contribute to a project by choosing one of the available project addresses and selecting an amount in Ether. A "ca-ching" noise will sound when you contribute and the tx is logged.
+* All available address from the running RPC will display at the bottom and in the console.
 
+## Test
+
+* `truffle test` creates a project and checks the refund function
 
 ## Screenshot
 
@@ -23,6 +29,6 @@ Decentralized crowd funding dApp with front end. Two contracts deployed (`Fundin
 
 ## Issues / ToDo
 
-* Improve functionality
+* Improve overall functionality, especially taking advantage of `Events()` and more of the `Project` capabilities.
 
 

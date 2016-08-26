@@ -2,6 +2,8 @@ var accounts;
 var account;
 var balance;
 var fh;
+var projectsArray = [];
+var projectIndex = 0;
 
 function setStatus(message) {
   var status = document.getElementById("status");
@@ -24,22 +26,39 @@ function createProject(){
 
   fh.createProject(projectName, projectDescription, projectUserAddr, projectAmountNeeded, projectMinutes, {from:accounts[0]}).then(function(instance){
     console.log(instance);
-    logTx("New Project contract deployed at " + instance.address);
+    logTx("New Project contract deployed. Tx: " + instance);
     setStatus("Project created!");
-    updateProjectList();
+    updateProjectList(projectIndex);
+    projectIndex++;
   }).catch(function(error){
     console.log(error);
   });
 
-  /*Project.new(projectName, projectDescription, projectUserAddr, projectAmountNeeded, projectMinutes, {from:accounts[0]}).then(function(instance){
-    console.log(instance);
-    logTx("New Project contract deployed at " + instance.address);
-    setStatus("Project created!");
-    updateProjectList();
-  }).catch(function(error){
-    console.log(error);
-  });*/
+  // Project.new(projectName, projectDescription, projectUserAddr, projectAmountNeeded, projectMinutes, {from:accounts[0]}).then(function(instance){
+  //   console.log(instance);
+  //   logTx("New Project contract deployed at " + instance.address);
+  //   setStatus("Project created!");
+  //   updateProjectList();
+  // }).catch(function(error){
+  //   console.log(error);
+  // });
 }
+
+function updateProjectList(index){
+  var tableData = "<tr><td>" + projectsArray[index].pName + "</td><td>" + projectsArray[index].pDesc + "</td><td>" + projectsArray[index].pAddr + "</td><td>" + projectsArray[index].pGoal.toNumber() + " ETH</td><td>" + timeConverter(projectsArray[index].pDeadline.toNumber()) + "</td></tr>";
+  document.getElementById("browse-projects-table").innerHTML += tableData;
+}
+
+// function catchEvent(){
+//   var fh = FundingHub.deployed();
+//   var eProjectCreated = fh.ProjectCreated();
+//   transfers.watch(function(error, result) {
+//     // This will catch all Transfer events, regardless of how they originated.
+//     if (error == null) {
+//       console.log(result.args);
+//     }
+//   }
+// }
 
 function contribute(){
   var contributeAddr = document.getElementById("contributeAddrInput").value;
@@ -50,14 +69,9 @@ function contribute(){
     console.log(result);
     logTx("Contribution to " + contributeAddr + " sent. Tx: " + result);
     setStatus("Contribution sent!");
-    updateProjectList();
   }).catch(function(error){
     console.log(error);
   });
-}
-
-function updateProjectList(){
-  console.log('update project list');
 }
 
 function timeConverter(UNIX_timestamp){
@@ -113,6 +127,31 @@ window.onload = function() {
 
     setAddress();
     refreshBalances();
+
+    var eProjectCreated = fh.ProjectCreated();
+    eProjectCreated.watch(function(error, result) {
+      // This will catch all events, regardless of how they originated.
+      if (error == null) {
+        //console.log(result.args);
+        projectsArray.push(result.args);
+        console.log(projectsArray);
+        updateProjectList(projectIndex);
+        projectIndex++;
+      }
+    });
+
+    var eContribution = fh.ProjectContributedTo();
+    eContribution.watch(function(error, result) {
+      // This will catch all events, regardless of how they originated.
+      if (error == null) {
+        console.log(result.args);
+        var text = "Project " + result.args.pcAddr + " received " + result.args.pcAmount + " ETH!";
+        logTx(text);
+        var audio = new Audio('../images/ca-ching.mp3');
+        audio.play();
+      }
+    });
+
   });
 
   web3.eth.getTransactionReceiptMined = function (txnHash, interval) {

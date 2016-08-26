@@ -1,5 +1,7 @@
 # FundingHub-Project dApp
 
+Github repo at [https://github.com/FugueWeb/fundinghub-project](https://github.com/FugueWeb/fundinghub-project).
+
 Requires [Truffle 2.0](http://truffle.readthedocs.io/en/latest/getting_started/installation/), NodeJS, and Geth RPC
 
 Decentralized crowd funding dApp with front end. Two contracts deployed (`FundingHub.sol` and `Project.sol`) that allow creates projects to be funded and stores them as a registry.
